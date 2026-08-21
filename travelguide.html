@@ -1,1 +1,360 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Offline Travel Guide — KZN & Gauteng</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #2d3748, #4a5568, #718096);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+        #password-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 80vh; text-align: center;
+        }
+        #password-screen h2 { font-size: 26px; margin-bottom: 20px; }
+        #password-screen input {
+            padding: 15px; font-size: 18px; border-radius: 10px; border: none;
+            width: 250px; text-align: center; margin-bottom: 15px;
+        }
+        #password-screen button {
+            padding: 15px 40px; font-size: 18px; font-weight: bold;
+            background: #2f855a; color: white; border: none; border-radius: 10px; cursor: pointer;
+        }
+        .error-msg { color: #ffdddd; margin-top: 10px; display: none; }
+        #main-content { display: none; }
+        .container { max-width: 420px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 26px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 15px; }
+        .menu-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 20px; color: #c6f6d5; }
+        .region-tab {
+            display: inline-block; padding: 10px 20px; margin: 5px; border-radius: 8px;
+            background: rgba(255,255,255,0.15); cursor: pointer; font-weight: 500;
+        }
+        .region-tab.active { background: #2f855a; }
+        .menu-item {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+            border-radius: 16px; padding: 18px; margin-bottom: 12px;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .menu-item:hover { transform: translateY(-2px); background: rgba(255,255,255,0.25); }
+        .menu-item h3 { font-size: 17px; margin-bottom: 4px; }
+        .menu-item p { font-size: 14px; opacity: 0.85; }
+        .content-area {
+            background: rgba(255,255,255,0.95); color: #2d3748;
+            border-radius: 16px; padding: 20px; margin-top: 20px; display: none;
+        }
+        .content-area.show { display: block; }
+        .content-area h2 { color: #2f855a; margin-bottom: 15px; font-size: 19px; }
+        .place-card {
+            padding: 14px; border-bottom: 1px dashed #cbd5e0; border-radius: 8px; margin-bottom: 10px;
+            background: #f7fafc;
+        }
+        .place-card:last-child { border-bottom: none; }
+        .place-name { font-weight: bold; font-size: 16px; color: #2d3748; margin-bottom: 4px; }
+        .place-details { font-size: 14px; color: #4a5568; line-height: 1.5; }
+        .place-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 12px; margin-right: 5px; margin-top: 5px; }
+        .tag-food { background: #fef3c7; color: #92400e; }
+        .tag-fuel { background: #c6f6d5; color: #22543d; }
+        .tag-takeaway { background: #e9d8fd; color: #553c9a; }
+        .tag-toll { background: #fed7d7; color: #742a2a; }
+        .map-link { display: inline-block; margin-top: 8px; font-size: 14px; color: #2f855a; text-decoration: none; font-weight: 500; }
+        .map-link:hover { text-decoration: underline; }
+        .toll-summary {
+            background: #fffaf0; border-left: 4px solid #ed8936; padding: 12px;
+            border-radius: 8px; margin: 12px 0;
+        }
+        .toll-plaza {
+            padding: 8px 0; border-bottom: 1px dotted #e2e8f0; font-size: 15px;
+        }
+        .toll-plaza:last-child { border-bottom: none; }
+        .toll-name { font-weight: 600; }
+        .toll-cost { font-weight: bold; color: #c05621; }
+        .back-btn {
+            background: #2f855a; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; margin-top: 15px; font-size: 15px;
+        }
+        .disclaimer {
+            text-align: center; font-size: 11px; opacity: 0.8; margin-top: 30px;
+            padding: 15px; background: rgba(0,0,0,0.15); border-radius: 10px; line-height: 1.5;
+        }
+        .offline-note {
+            background: rgba(47, 133, 90, 0.2); padding: 12px; border-radius: 8px; margin-bottom: 15px;
+            font-size: 14px; line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
 
+<div id="password-screen">
+    <div style="font-size:50px; margin-bottom:15px;">🗺️</div>
+    <h2>Enter Your Access Code</h2>
+    <input type="password" id="password-input" placeholder="Enter password...">
+    <br><br>
+    <button onclick="checkPassword()">UNLOCK MY GUIDE 🗝️</button>
+    <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
+</div>
+
+<div id="main-content">
+    <div class="container">
+        <div class="header">
+            <div style="font-size:50px; margin-bottom:10px;">🗺️</div>
+            <h1>SA Offline Travel Guide</h1>
+            <p>KZN & Gauteng — Food • Fuel • Toll Roads</p>
+        </div>
+
+        <div class="offline-note">
+            📍 <strong>Works offline!</strong> Save to your phone home screen. Toll costs shown are for <em>light vehicles / cars</em> — one-way. Always check SANRAL for latest tariffs before travelling.
+        </div>
+
+        <div class="menu-title">📋 What's Inside</div>
+
+        <div class="menu-item" onclick="showSection('tolls')">
+            <h3>🛣️ Major Routes & Toll Costs</h3>
+            <p>N3, N1, N2, N4 — number of plazas & one-way prices</p>
+        </div>
+
+        <div class="menu-item" onclick="showSection('kzn-food')">
+            <h3>🌊 KZN — Restaurants & Takeaways</h3>
+            <p>Durban, Umhlanga, Ballito & Pietermaritzburg</p>
+        </div>
+
+        <div class="menu-item" onclick="showSection('gp-food')">
+            <h3>🏔️ Gauteng — Restaurants & Takeaways</h3>
+            <p>Johannesburg, Sandton, Pretoria & Midrand</p>
+        </div>
+
+        <div class="menu-item" onclick="showSection('fuel')">
+            <h3>⛽ Fuel Stations (Both Provinces)</h3>
+            <p>24-hour stations with amenities — restrooms, ATMs, convenience</p>
+        </div>
+
+        <!-- 🛣️ TOLL ROADS SECTION -->
+        <div id="tolls" class="content-area">
+            <h2>🛣️ Major Routes & Toll Road Costs</h2>
+            <p style="color:#718096; font-size:14px; margin-bottom:15px;">Costs are <strong>one-way</strong> for light vehicles / standard cars. Return = ×2. <em>Tariffs updated annually — verify before travel.</em></p>
+
+            <!-- N3: JHB ↔ DURBAN -->
+            <h3 style="color:#2d3748; margin-bottom:10px;">🚗 N3 — Johannesburg ↔ Durban</h3>
+            <div class="toll-summary">
+                <strong>📍 Total route:</strong> Approx. 570km<br>
+                <strong>🔢 Number of toll plazas:</strong> 4 (one-way)<br>
+                <strong>💰 Estimated one-way total:</strong> ~R215 – R240
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. ✅ De Hoek</span> (near Heidelberg / Gauteng–KZN border)
+                <span class="toll-cost" style="float:right;">~R62</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. ✅ Wilge</span> (near Harrismith)
+                <span class="toll-cost" style="float:right;">~R58</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">3. ✅ Tugela</span> (KZN midlands)
+                <span class="toll-cost" style="float:right;">~R52</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">4. ✅ Mariannhill</span> (Durban outer west)
+                <span class="toll-cost" style="float:right;">~R45</span>
+            </div>
+
+            <!-- N1: JHB ↔ PRETORIA -->
+            <h3 style="color:#2d3748; margin:25px 0 10px;">🚗 N1 — Johannesburg ↔ Pretoria</h3>
+            <div class="toll-summary">
+                <strong>📍 Total route:</strong> Approx. 60km<br>
+                <strong>🔢 Number of toll plazas:</strong> 1 or 2 depending on route<br>
+                <strong>💰 Estimated one-way total:</strong> ~R35 – R105
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. ✅ Buccleuch</span> (Sandton / Midrand boundary)
+                <span class="toll-cost" style="float:right;">~R36</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. ✅ Pumulani / Hammarskjold</span> (Midrand / Centurion — optional route)
+                <span class="toll-cost" style="float:right;">~R69</span>
+            </div>
+
+            <!-- N2: DURBAN ↔ PMB / COAST -->
+            <h3 style="color:#2d3748; margin:25px 0 10px;">🚗 N2 — Durban ↔ Pietermaritzburg / South Coast</h3>
+            <div class="toll-summary">
+                <strong>📍 Total route:</strong> Approx. 80–150km<br>
+                <strong>🔢 Number of toll plazas:</strong> 1–2 depending on stretch<br>
+                <strong>💰 Estimated one-way total:</strong> ~R35 – R85
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. ✅ Umgeni / Mvoti</span> (North Coast / Ballito stretch)
+                <span class="toll-cost" style="float:right;">~R36</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. ✅ Oribi</span> (South Coast / Port Shepstone)
+                <span class="toll-cost" style="float:right;">~R48</span>
+            </div>
+
+            <!-- N4: JHB ↔ MP / MOZ BORDER -->
+            <h3 style="color:#2d3748; margin:25px 0 10px;">🚗 N4 — Johannesburg ↔ Mpumalanga / Komatipoort</h3>
+            <div class="toll-summary">
+                <strong>📍 Total route:</strong> Approx. 350km<br>
+                <strong>🔢 Number of toll plazas:</strong> 3 (one-way)<br>
+                <strong>💰 Estimated one-way total:</strong> ~R160 – R185
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. ✅ N4 Gateway / Platinum</span> (east of Pretoria)
+                <span class="toll-cost" style="float:right;">~R50</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. ✅ Machado</span> (near Mbombela / Nelspruit)
+                <span class="toll-cost" style="float:right;">~R65</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">3. ✅ Komatipoort</span> (near Mozambique border)
+                <span class="toll-cost" style="float:right;">~R55</span>
+            </div>
+
+            <p style="margin-top:20px; font-size:13px; color:#718096;">
+                💡 <strong>Tip:</strong> Heavy vehicles, buses & motorcycles = different tariffs.<br>
+                📱 Download <strong>e-toll / SANRAL app</strong> for live updates.<br>
+                🚫 Many tolled routes have <em>free alternative roads</em> — just add more travel time.
+            </p>
+            <button class="back-btn" onclick="hideSection('tolls')">← Back</button>
+        </div>
+
+        <!-- 🌊 KZN FOOD SECTION -->
+        <div id="kzn-food" class="content-area">
+            <h2>🌊 KZN — Restaurants & Takeaways</h2>
+            <h3 style="color:#2d3748; margin:10px 0;">🍽️ Top Restaurants</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 The Oyster Box — Umhlanga</div>
+                <div class="place-details">Fine dining, ocean views, famous buffet<br>📍 Umhlanga Rocks Drive, Umhlanga</div>
+                <span class="place-tag tag-food">Fine Dining</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=The+Oyster+Box+Umhlanga" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Moyo — uShaka Marine World</div>
+                <div class="place-details">Authentic African cuisine, waterfront setting<br>📍 uShaka Marine, Durban Point</div>
+                <span class="place-tag tag-food">African Cuisine</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Moyo+uShaka+Durban" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Butcher Boys — Durban North</div>
+                <div class="place-details">Premium steaks & grills, local favourite<br>📍 Lilian Ngoyi Road, Durban North</div>
+                <span class="place-tag tag-food">Steakhouse</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Butcher+Boys+Durban+North" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <h3 style="color:#2d3748; margin:20px 0 10px;">🍔 Best Takeaways</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 Nando's — Gateway & nationwide</div>
+                <div class="place-details">Famous flame-grilled peri-peri chicken<br>📍 Gateway, Pavilion, CBD & everywhere</div>
+                <span class="place-tag tag-takeaway">Chicken • Halal</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Nandos+Gateway+Umhlanga" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Durban Bunny Chow Spots</div>
+                <div class="place-details">Authentic quarter/half/full bunny chow<br>📍 Victoria Street, Sparks Road, various</div>
+                <span class="place-tag tag-takeaway">Local Speciality</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Bunny+Chow+Victoria+Street+Durban" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <button class="back-btn" onclick="hideSection('kzn-food')">← Back</button>
+        </div>
+
+        <!-- 🏔️ GAUTENG FOOD SECTION -->
+        <div id="gp-food" class="content-area">
+            <h2>🏔️ Gauteng — Restaurants & Takeaways</h2>
+            <h3 style="color:#2d3748; margin:10px 0;">🍽️ Top Restaurants</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 Marble Restaurant — Rosebank</div>
+                <div class="place-details">Fire-grilled cuisine, spectacular city views<br>📍 Keyes Art Mile, Rosebank, JHB</div>
+                <span class="place-tag tag-food">Modern Grill</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Marble+Restaurant+Rosebank+Johannesburg" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 The Black Door — Menlyn Maine</div>
+                <div class="place-details">Trendy spot, great vibes, diverse menu<br>📍 Menlyn Maine, Pretoria</div>
+                <span class="place-tag tag-food">Lounge / Restaurant</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=The+Black+Door+Menlyn+Maine+Pretoria" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <h3 style="color:#2d3748; margin:20px 0 10px;">🍔 Best Takeaways</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 Steers — Nationwide</div>
+                <div class="place-details">Real burgers, hand-cut chips<br>📍 Every mall & high street — Sandton, Menlyn, CBDs</div>
+                <span class="place-tag tag-takeaway">Burgers • Chips</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Steers+Sandton+City" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Fishaways</div>
+                <div class="place-details">Quality seafood takeaway — hake, calamari, prawns<br>📍 Most shopping centres nationwide</div>
+                <span class="place-tag tag-takeaway">Seafood</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Fishaways+Sandton" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <button class="back-btn" onclick="hideSection('gp-food')">← Back</button>
+        </div>
+
+        <!-- ⛽ FUEL STATIONS SECTION -->
+        <div id="fuel" class="content-area">
+            <h2>⛽ Fuel Stations with Amenities</h2>
+            <h3 style="color:#2d3748; margin:10px 0;">🌊 KZN Area</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 Shell Ultra City — Gateway / M4</div>
+                <div class="place-details">24hr • Convenience store • Restrooms • ATM • Coffee<br>📍 M4 at Gateway Boulevard, Umhlanga</div>
+                <span class="place-tag tag-fuel">24hr • Full Amenities</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Shell+Ultra+City+Gateway+Umhlanga" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Engen — N3 Near Pietermaritzburg</div>
+                <div class="place-details">24hr • Quick shop • Restrooms • Restaurant<br>📍 N3 Midlands, PMB area</div>
+                <span class="place-tag tag-fuel">24hr • Highway Stop</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Engen+N3+Pietermaritzburg" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <h3 style="color:#2d3748; margin:20px 0 10px;">🏔️ Gauteng Area</h3>
+            <div class="place-card">
+                <div class="place-name">🔸 Caltex — N1 Highway Stops</div>
+                <div class="place-details">24hr • Restaurants • Restrooms • ATMs • Convenience<br>📍 N1 — Sandton, Midrand, Pretoria</div>
+                <span class="place-tag tag-fuel">24hr • Highway Stop</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Caltex+N1+Midrand" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <div class="place-card">
+                <div class="place-name">🔸 Sasol — Sandton & Bryanston</div>
+                <div class="place-details">24hr • Coffee shop • Convenience store • Restrooms<br>📍 Sandton Drive, William Nicol, Bryanston</div>
+                <span class="place-tag tag-fuel">24hr • Premium Amenities</span>
+                <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=Sasol+Sandton+Drive" target="_blank">📍 Open in Maps →</a>
+            </div>
+            <button class="back-btn" onclick="hideSection('fuel')">← Back</button>
+        </div>
+
+        <div class="disclaimer">
+            ⚠️ Toll costs are <strong>estimates for light vehicles</strong> and subject to change annually by SANRAL.<br>
+            Always verify current tariffs before travel. Opening times & amenities may change.<br>
+            Not affiliated with any listed establishment. Tap "Open in Maps" for live directions & current hours.
+        </div>
+    </div>
+</div>
+
+<script>
+const PASSWORD = "travel2026";
+
+function checkPassword() {
+    if (document.getElementById("password-input").value === PASSWORD) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+    } else {
+        document.getElementById("wrong-pass").style.display = "block";
+    }
+}
+
+function showSection(id) {
+    document.querySelectorAll('.content-area').forEach(e => e.classList.remove('show'));
+    document.getElementById(id).classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideSection(id) {
+    document.getElementById(id).classList.remove('show');
+}
+</script>
+
+</body>
+</html>
