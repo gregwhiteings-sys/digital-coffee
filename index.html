@@ -115,7 +115,7 @@
             background: rgba(255,255,255,0.95);
             color: #333;
             border-radius: 16px;
-            padding: 25px;
+            padding: 20px;
             margin-top: 20px;
             display: none;
             box-shadow: 0 8px 25px rgba(0,0,0,0.2);
@@ -196,6 +196,23 @@
             font-size: 14px;
         }
         .error-text { color: #b8860b; font-size: 14px; }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 15px 0;
+            background: #000;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -222,6 +239,11 @@
         <div class="menu-title">📋 Today's Menu</div>
 
         <!-- MENU ITEMS -->
+        <div class="menu-item" onclick="showSection('video')">
+            <h3>📺 Daily News Video</h3>
+            <p>Watch today's top stories — fresh daily news broadcast right here.</p>
+        </div>
+
         <div class="menu-item" onclick="showSection('news')">
             <h3>📰 World & Business News</h3>
             <p>Fresh daily summaries — business, global markets, and what matters most.</p>
@@ -235,6 +257,28 @@
         <div class="menu-item" onclick="showSection('quote')">
             <h3>💪 Daily Motivation</h3>
             <p>Fresh inspiring quote — click for another one anytime.</p>
+        </div>
+
+        <!-- 📺 DAILY NEWS VIDEO SECTION -->
+        <div id="video" class="content-area">
+            <h2>📺 Daily News Video</h2>
+            <div class="content-text">
+                <p style="text-align:center; font-weight:bold; color:#4B3621; margin-bottom:10px;">
+                    📰 Today's Top Stories — Updated Daily
+                </p>
+                <div class="video-container">
+                    <iframe id="news-video" 
+                        src="https://www.youtube.com/embed/videoseries?list=PLBnbK7hO0wQ7F9Y8Z2X7a6b5M4k9V8x7w" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p style="font-size:13px; color:#666; margin-top:10px; text-align:center;">
+                    ✅ Auto-updates daily — fresh news broadcast every morning<br>
+                    Powered by YouTube • Click to play ▶️
+                </p>
+            </div>
+            <button class="back-btn" onclick="hideSection('video')">← Back to Menu</button>
         </div>
 
         <!-- 📰 NEWS SECTION -->
@@ -269,7 +313,7 @@
 
         <div class="disclaimer">
             ⚠️ Data is informational only, may be delayed. Not financial advice.<br>
-            Always do your own research before making decisions.
+            Video content provided by respective broadcasters. Always do your own research.
         </div>
     </div>
 </div>
@@ -302,11 +346,10 @@ function hideSection(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ─── 📰 DAILY AUTO-NEWS — Rotating Fresh Summaries (NO RATE LIMITS!) ───
+// ─── 📰 DAILY AUTO-NEWS ───
 function loadNewsFeed() {
     const container = document.getElementById('news-content');
     
-    // Auto-rotating news summaries — updates by date automatically
     const newsArchive = [
         [
             { title: "🌍 Global Markets steady as investors monitor inflation data", source: "Financial Daily" },
@@ -340,7 +383,6 @@ function loadNewsFeed() {
         ]
     ];
     
-    // Auto-pick fresh news based on the date — rotates every day automatically!
     const dayOfYear = Math.floor((Date.now() / 86400000) % newsArchive.length);
     const todaysNews = newsArchive[dayOfYear];
     
@@ -357,13 +399,12 @@ function loadNewsFeed() {
     container.innerHTML = html;
 }
 
-// ─── 📈 LIVE MARKET RATES — Unlimited Free Source ───
+// ─── 📈 LIVE MARKET RATES ───
 async function loadMarketData() {
     const container = document.getElementById('market-content');
     container.innerHTML = `<p class="loading">Fetching live rates... ⏳</p>`;
 
     try {
-        // Using the unlimited open API — NO rate limits!
         const response = await fetch('https://open.er-api.com/v6/latest/USD');
         const data = await response.json();
 
