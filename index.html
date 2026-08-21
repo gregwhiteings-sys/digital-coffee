@@ -196,43 +196,37 @@
             font-size: 14px;
         }
         .error-text { color: #b8860b; font-size: 14px; }
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-            margin: 15px 0;
-            background: #000;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
         .video-link-box {
             background: #e8d4b8;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 12px;
             text-align: center;
             margin: 15px 0;
         }
-        .video-link-box a {
+        .video-link-box h3 {
             color: #4B3621;
-            font-weight: bold;
-            font-size: 16px;
-            text-decoration: none;
-            display: inline-block;
-            padding: 12px 25px;
-            background: #D4A574;
-            border-radius: 8px;
-            margin-top: 10px;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
-        .video-link-box a:hover {
-            background: #c49464;
+        .video-link-box p {
+            color: #6f4e37;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .watch-btn {
+            display: inline-block;
+            color: white !important;
+            font-weight: bold;
+            font-size: 17px;
+            text-decoration: none;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .watch-btn:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -259,10 +253,10 @@
 
         <div class="menu-title">📋 Today's Menu</div>
 
-        <!-- MENU ITEMS -->
+        <!-- MENU items -->
         <div class="menu-item" onclick="showSection('video')">
             <h3>📺 Daily News Video</h3>
-            <p>Watch today's top stories — fresh daily news broadcast.</p>
+            <p>Watch today's top stories — fresh daily news broadcast, updated every morning.</p>
         </div>
 
         <div class="menu-item" onclick="showSection('news')">
@@ -284,20 +278,12 @@
         <div id="video" class="content-area">
             <h2>📺 Daily News Video</h2>
             <div class="content-text">
-                <p style="text-align:center; font-weight:bold; color:#4B3621; margin-bottom:10px;">
-                    📰 Today's Top Stories — Updated Daily
-                </p>
                 <div class="video-link-box">
-                    <p style="color:#4B3621; font-size:15px; line-height:1.6;">
-                        Click below to watch today's fresh daily news broadcast from the world's top news source.<br><br>
-                        ✅ Updates automatically every single day<br>
-                        ✅ World, business, finance & market news
-                    </p>
-                    <a href="https://www.youtube.com/playlist?list=PLhOvFAYHbYhDXm9kPvRjK0uC4aWkMqOpH" target="_blank">▶️ WATCH TODAY'S NEWS</a>
+                    <h3>📰 Today's Top Stories</h3>
+                    <p>World, business, finance & market news — freshly updated daily from the world's most trusted news source.</p>
+                    <a class="watch-btn" href="https://www.youtube.com/@AlJazeeraEnglish/videos" target="_blank">▶️ WATCH TODAY'S NEWS</a>
+                    <p style="margin-top:15px; font-size:12px; color:#888;">✅ Updates automatically every day<br>✅ Opens in new tab<br>✅ 100% reliable — never unavailable</p>
                 </div>
-                <p style="font-size:12px; color:#888; margin-top:10px; text-align:center;">
-                    Opens in new tab • Fresh news broadcast every morning • Auto-updates daily
-                </p>
             </div>
             <button class="back-btn" onclick="hideSection('video')">← Back to Menu</button>
         </div>
@@ -334,7 +320,7 @@
 
         <div class="disclaimer">
             ⚠️ Data is informational only, may be delayed. Not financial advice.<br>
-            Video content provided by respective broadcasters. Always do your own research.
+            Video content provided by Al Jazeera. Always do your own research.
         </div>
     </div>
 </div>
