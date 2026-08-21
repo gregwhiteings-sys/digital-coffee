@@ -213,6 +213,27 @@
             height: 100%;
             border: none;
         }
+        .video-link-box {
+            background: #e8d4b8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .video-link-box a {
+            color: #4B3621;
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 12px 25px;
+            background: #D4A574;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        .video-link-box a:hover {
+            background: #c49464;
+        }
     </style>
 </head>
 <body>
@@ -241,7 +262,7 @@
         <!-- MENU ITEMS -->
         <div class="menu-item" onclick="showSection('video')">
             <h3>📺 Daily News Video</h3>
-            <p>Watch today's top stories — fresh daily news broadcast right here.</p>
+            <p>Watch today's top stories — fresh daily news broadcast.</p>
         </div>
 
         <div class="menu-item" onclick="showSection('news')">
@@ -266,16 +287,16 @@
                 <p style="text-align:center; font-weight:bold; color:#4B3621; margin-bottom:10px;">
                     📰 Today's Top Stories — Updated Daily
                 </p>
-                <div class="video-container">
-                    <iframe id="news-video" 
-                        src="https://www.youtube.com/embed/videoseries?list=PLBnbK7hO0wQ7F9Y8Z2X7a6b5M4k9V8x7w" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
+                <div class="video-link-box">
+                    <p style="color:#4B3621; font-size:15px; line-height:1.6;">
+                        Click below to watch today's fresh daily news broadcast from the world's top news source.<br><br>
+                        ✅ Updates automatically every single day<br>
+                        ✅ World, business, finance & market news
+                    </p>
+                    <a href="https://www.youtube.com/playlist?list=PLhOvFAYHbYhDXm9kPvRjK0uC4aWkMqOpH" target="_blank">▶️ WATCH TODAY'S NEWS</a>
                 </div>
-                <p style="font-size:13px; color:#666; margin-top:10px; text-align:center;">
-                    ✅ Auto-updates daily — fresh news broadcast every morning<br>
-                    Powered by YouTube • Click to play ▶️
+                <p style="font-size:12px; color:#888; margin-top:10px; text-align:center;">
+                    Opens in new tab • Fresh news broadcast every morning • Auto-updates daily
                 </p>
             </div>
             <button class="back-btn" onclick="hideSection('video')">← Back to Menu</button>
