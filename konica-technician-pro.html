@@ -22,19 +22,19 @@
         body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
 
         /* ======================================
-           ACTIVATION / LOGIN SCREEN
+           PASSWORD SCREEN
            ====================================== */
-        #activation-screen {
+        #password-screen {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; padding: 20px; text-align: center;
         }
-        .activation-box {
+        .password-box {
             background: var(--bg-card); padding: 40px 30px; border-radius: 16px;
             max-width: 400px; width: 100%; border: 1px solid #333;
         }
-        .activation-box h1 { font-size: 24px; margin-bottom: 5px; color: var(--accent-blue); }
-        .activation-box h2 { font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-bottom: 30px; }
-        .activation-input {
+        .password-box h1 { font-size: 24px; margin-bottom: 5px; color: var(--accent-blue); }
+        .password-box h2 { font-size: 16px; font-weight: 400; color: var(--text-secondary); margin-bottom: 30px; }
+        .password-input {
             width: 100%; padding: 14px; font-size: 16px; border-radius: 8px;
             border: 1px solid #444; background: var(--bg-dark); color: white;
             margin-bottom: 15px; text-align: center;
@@ -51,8 +51,10 @@
             border: none; border-radius: 6px; cursor: pointer; margin-top: 10px;
         }
         .version-label { font-size: 12px; color: var(--text-secondary); margin-top: 20px; }
-        .license-status { font-size: 13px; color: var(--success); margin-top: 10px; }
-        .warning-text { font-size: 11px; color: var(--warning); margin-top: 20px; line-height: 1.5; }
+        .error-msg { color: var(--danger); margin-top: 12px; display: none; }
+        .disclaimer-text {
+            font-size: 11px; color: var(--text-secondary); margin-top: 20px; line-height: 1.5;
+        }
 
         /* ======================================
            MAIN APP LAYOUT
@@ -103,11 +105,11 @@
         }
         .code-tag {
             display: inline-block; padding: 8px 16px; background: var(--bg-hover);
-            border-radius: 6px; margin: 5px; cursor: pointer; font-family: monospace; font-size: 15px;
+            border-radius: 6px margin: 5px; cursor: pointer; font-family: monospace; font-size: 15px;
         }
         .code-tag:hover { background: var(--accent-blue); }
 
-        /* Data Tables & Cards */
+        /* Data Cards */
         .data-card {
             background: var(--bg-card); border-radius: 12px; padding: 20px; margin-bottom: 15px;
             border-left: 4px solid var(--accent-blue);
@@ -122,24 +124,13 @@
             padding: 12px; border-radius: 6px; font-size: 13px; margin: 15px 0;
         }
 
-        /* Diagnostic Workflow Steps */
+        /* Workflow Steps */
         .workflow-steps { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
         .step-badge {
             padding: 8px 14px; background: var(--bg-hover); border-radius: 20px; font-size: 13px;
         }
-        .step-badge.active-step { background: var(--accent-blue); }
 
-        /* Tabs inside Error Detail */
-        .sub-tabs { display: flex; flex-wrap: wrap; gap: 5px; margin: 15px 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .sub-tab {
-            padding: 8px 16px; background: transparent; color: var(--text-secondary);
-            border: none; cursor: pointer; font-size: 14px; border-bottom: 2px solid transparent;
-        }
-        .sub-tab.active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
-        .sub-tab-content { display: none; padding: 15px 0; }
-        .sub-tab-content.active { display: block; }
-
-        /* Forms & Notes */
+        /* Forms & Buttons */
         textarea, input, select {
             width: 100%; padding: 12px; background: var(--bg-dark); color: white;
             border: 1px solid #444; border-radius: 8px; margin: 6px 0; font-size: 14px;
@@ -155,7 +146,7 @@
             margin-top: 40px; border-top: 1px solid #333;
         }
 
-        /* Print styles */
+        /* Print Styles */
         @media print {
             body { background: white; color: black; }
             .nav-container, .app-header, .no-print { display: none !important; }
@@ -172,21 +163,19 @@
 <body>
 
 <!-- ==============================================
-     ACTIVATION / LOGIN SCREEN
+     PASSWORD SCREEN
      ============================================== -->
-<div id="activation-screen">
-    <div class="activation-box">
+<div id="password-screen">
+    <div class="password-box">
         <h1>KONICA MINOLTA</h1>
         <h2>TECHNICIAN PRO</h2>
-        <p style="color:var(--text-secondary); margin-bottom:20px;">Enter your activation key</p>
-        <input type="password" class="activation-input" id="activation-key" placeholder="XXXX-XXXX-XXXX-XXXX">
-        <button class="btn-primary" onclick="activateProduct()">🔓 ACTIVATE / LOGIN</button>
-        <p class="license-status" id="license-status">Trial Version — Demo Mode</p>
+        <p style="color:var(--text-secondary); margin-bottom:20px;">Enter password to access</p>
+        <input type="password" class="password-input" id="app-password" placeholder="Enter password...">
+        <button class="btn-primary" onclick="checkPassword()">🔓 UNLOCK APP</button>
+        <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
         <p class="version-label">Version 1.0 • Database: Initial Demo</p>
-        <button class="btn-secondary" onclick="showOfflineDemo()">📱 Continue Offline Demo</button>
-        <div class="warning-text">
-            ⚠️ Client-side protection only. For commercial deployment, use server-side licensing with unique keys, device limits, and subscription management.<br><br>
-            <strong>Independent technician reference tool.<br>Not affiliated with or endorsed by Konica Minolta.</strong>
+        <div class="disclaimer-text">
+            Independent technician reference tool.<br>Not affiliated with or endorsed by Konica Minolta.
         </div>
     </div>
 </div>
@@ -199,7 +188,7 @@
     <header class="app-header">
         <h1>🖨️ KM Technician Pro</h1>
         <div class="search-bar">
-            <input type="text" id="global-search" placeholder="🔍 Search model, error code, part number, symptom..." oninput="performGlobalSearch(this.value)">
+            <input type="text" id="global-search" placeholder="🔍 Search model, error code, part number..." oninput="performGlobalSearch(this.value)">
         </div>
         <div class="header-actions">
             <button class="btn-secondary" onclick="showPage('notes')">📝 Notes</button>
@@ -368,7 +357,7 @@
                     7. Reinstall tray → Clear error in Service Mode<br>
                     8. If error returns → Replace lift motor or sensor assembly</p>
                     
-                    <p><strong>Reset Procedure:</strong> Enter Service Mode → Utility/Counter → Stop → 00 → Stop → 01 → System 2 → Error History → Select Code → Clear<br>
+                    <p><strong>Reset Procedure:</strong> Service Mode → Utility/Counter → Stop → 00 → Stop → 01 → System 2 → Error History → Select Code → Clear<br>
                     <strong>Post-Repair Test:</strong> Load Tray 1 → Print 5–10 copies from Tray 1 → Monitor for repeat error<br>
                     <strong>If Error Returns:</strong> Check harness continuity between tray unit and main board; replace tray lift motor; replace paper feed board.</p>
                     
@@ -518,19 +507,19 @@
             <div class="data-card">
                 <h3>Standard Service Procedure — Full Workflow</h3>
                 <div class="workflow-steps" style="font-size:15px; padding:15px; line-height:2;">
-                    <span class="step-badge active-step">1️⃣ IDENTIFY — Confirm exact machine model & serial number</span><br>
-                    <span class="step-badge active-step">2️⃣ ERROR — Record full error code, sub-code, and when it occurs</span><br>
-                    <span class="step-badge active-step">3️⃣ SYMPTOM — Does it happen on copy? print? scan? fax? warm-up? specific tray?</span><br>
-                    <span class="step-badge active-step">4️⃣ OBVIOUS — Check paper, toner, doors, trays, power, environment</span><br>
-                    <span class="step-badge active-step">5️⃣ POWER CYCLE — OFF → Wait 60 sec → ON → Does error return?</span><br>
-                    <span class="step-badge active-step">6️⃣ CONNECTORS — Reseat harnesses, boards, units (power OFF first)</span><br>
-                    <span class="step-badge active-step">7️⃣ SENSORS — Clean, check flags, check wiring, check voltage</span><br>
-                    <span class="step-badge active-step">8️⃣ MOTORS — Listen for operation, check drive gears, check lock signals</span><br>
-                    <span class="step-badge active-step">9️⃣ DIAG MODE — Run Service Mode input/output checks, component tests</span><br>
-                    <span class="step-badge active-step">🔟 COMPONENT — Replace confirmed failed part with verified compatible part</span><br>
-                    <span class="step-badge active-step">1️⃣1️⃣ RESET — Clear error history & reset counters as required</span><br>
-                    <span class="step-badge active-step">1️⃣2️⃣ VERIFY — Run multiple test modes, full function check, quality inspection</span><br>
-                    <span class="step-badge active-step">1️⃣3️⃣ DOCUMENT — Record meter reading, work performed, parts used, result</span>
+                    <span class="step-badge">1️⃣ IDENTIFY — Confirm exact machine model & serial number</span><br>
+                    <span class="step-badge">2️⃣ ERROR — Record full error code, sub-code, and when it occurs</span><br>
+                    <span class="step-badge">3️⃣ SYMPTOM — Does it happen on copy? print? scan? fax? warm-up? specific tray?</span><br>
+                    <span class="step-badge">4️⃣ OBVIOUS — Check paper, toner, doors, trays, power, environment</span><br>
+                    <span class="step-badge">5️⃣ POWER CYCLE — OFF → Wait 60 sec → ON → Does error return?</span><br>
+                    <span class="step-badge">6️⃣ CONNECTORS — Reseat harnesses, boards, units (power OFF first)</span><br>
+                    <span class="step-badge">7️⃣ SENSORS — Clean, check flags, check wiring, check voltage</span><br>
+                    <span class="step-badge">8️⃣ MOTORS — Listen for operation, check drive gears, check lock signals</span><br>
+                    <span class="step-badge">9️⃣ DIAG MODE — Run Service Mode input/output checks, component tests</span><br>
+                    <span class="step-badge">🔟 COMPONENT — Replace confirmed failed part with verified compatible part</span><br>
+                    <span class="step-badge">1️⃣1️⃣ RESET — Clear error history & reset counters as required</span><br>
+                    <span class="step-badge">1️⃣2️⃣ VERIFY — Run multiple test modes, full function check, quality inspection</span><br>
+                    <span class="step-badge">1️⃣3️⃣ DOCUMENT — Record meter reading, work performed, parts used, result</span>
                 </div>
             </div>
             
@@ -650,4 +639,17 @@
             <h2>⚙️ Settings & Info</h2>
             <div class="data-card">
                 <h3>Application Info</h3>
-                <p
+                <p><strong>Version:</strong> 1.0</p>
+                <p><strong>Database Status:</strong> Demo — example records included</p>
+                <p><strong>Works Offline:</strong> Yes — save page to your device after first load</p>
+                <p><strong>Data Storage:</strong> Notes & Bookmarks saved locally in browser — never sent to server</p>
+                <p style="margin-top:15px;" class="verification-note">Always verify all service procedures, error codes, part numbers, and reset procedures with the official Konica Minolta Service Manual and Parts Catalogue specific to your exact machine model and firmware version.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>Konica Minolta Technician Pro v1.0 — Independent Reference Tool<br>
+        Not affiliated with
