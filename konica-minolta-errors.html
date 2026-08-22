@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konica Minolta — Error Codes & Solutions Reference</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #1e3a5f, #2c5282, #4299e1);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        /* 🔐 PASSWORD SCREEN */
+        #password-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 80vh; text-align: center;
+        }
+        #password-screen h2 { font-size: 26px; margin-bottom: 20px; }
+        #password-screen input {
+            padding: 15px; font-size: 18px; border-radius: 10px; border: none;
+            width: 280px; text-align: center; margin-bottom: 15px;
+        }
+        #password-screen button {
+            padding: 15px 40px; font-size: 18px; font-weight: bold;
+            background: #48bb78; color: white; border: none; border-radius: 10px; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #password-screen button:hover { transform: scale(1.05); }
+        .error-msg { color: #feb2b2; margin-top: 10px; display: none; }
+
+        /* MAIN CONTENT */
+        #main-content { display: none; }
+        .container { max-width: 480px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 22px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+
+        .price-banner {
+            background: linear-gradient(90deg, #f6ad55, #ed8936);
+            color: #1a202c; font-weight: bold; text-align: center;
+            padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 16px;
+        }
+
+        .bank-box {
+            background: rgba(72, 187, 120, 0.2); border: 2px solid #48bb78;
+            border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 25px;
+        }
+        .bank-box h3 { margin-bottom: 8px; font-size: 16px; }
+        .bank-detail { font-size: 15px; font-weight: 600; margin: 4px 0; }
+
+        /* CATEGORY TABS */
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .tab {
+            padding: 10px 14px; background: rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;
+            font-size: 14px; font-weight: 500; transition: all 0.2s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.25); }
+        .tab.active { background: #48bb78; color: #fff; }
+
+        /* SEARCH BOX */
+        .search-box {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            font-size: 16px; margin-bottom: 20px; color: #2d3748;
+        }
+
+        /* ERROR CODE CARDS */
+        .error-card {
+            background: rgba(255,255,255,0.96); color: #2d3748;
+            border-radius: 14px; padding: 16px; margin-bottom: 12px;
+            border-left: 4px solid #e53e3e;
+        }
+        .error-code {
+            font-size: 20px; font-weight: bold; color: #c53030; margin-bottom: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .error-cause { margin-bottom: 6px; }
+        .error-cause strong { color: #2b6cb0; }
+        .error-solution { background: #f0fff4; padding: 10px; border-radius: 8px; border-left: 3px solid #48bb78; }
+        .error-solution strong { color: #276749; }
+
+        .quick-fix {
+            background: #fef5e7; padding: 10px; border-radius: 8px; margin-bottom: 10px;
+            border-left: 3px solid #ed8936;
+        }
+        .quick-fix strong { color: #c05621; }
+
+        .back-btn {
+            background: #2b6cb0; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; margin-top: 15px; font-size: 15px;
+        }
+
+        .disclaimer {
+            text-align: center; font-size: 11px; opacity: 0.8; margin-top: 30px;
+            padding: 15px; background: rgba(0,0,0,0.15); border-radius: 10px; line-height: 1.5;
+        }
+
+        .category-section { display: none; }
+        .category-section.show { display: block; }
+
+        .model-list {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+        }
+        .model-tag {
+            background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 20px; font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="password-screen">
+    <div style="font-size:60px; margin-bottom:15px;">🖨️</div>
+    <h2>Konica Minolta Error Codes & Solutions</h2>
+    <p style="margin-bottom:20px; opacity:0.9">Complete Reference Guide</p>
+    <input type="password" id="password-input" placeholder="Enter your access code...">
+    <br><br>
+    <button onclick="checkPassword()">🔓 UNLOCK REFERENCE</button>
+    <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
+</div>
+
+<!-- ✅ MAIN CONTENT (UNLOCKED) -->
+<div id="main-content">
+    <div class="container">
+        <div class="header">
+            <div style="font-size:50px; margin-bottom:10px;">🖨️</div>
+            <h1>Konica Minolta Error Codes & Solutions</h1>
+            <p>bizhub Series • Complete Troubleshooting Guide</p>
+        </div>
+
+        <div class="price-banner">
+            💰 R20 Once-Off — Access Forever! Updated Regularly
+        </div>
+
+        <!-- 💳 BANK DETAILS -->
+        <div class="bank-box">
+            <h3>💳 Payment Details</h3>
+            <div class="bank-detail">🏦 Capitec Bank</div>
+            <div class="bank-detail">🔢 Account: 1550798756</div>
+            <div class="bank-detail">✍️ Ref: KM Errors + Your Name</div>
+        </div>
+
+        <!-- 🔧 QUICK FIX TIP -->
+        <div class="quick-fix">
+            <strong>⚡ FIRST STEP — Try this before anything else:</strong><br>
+            Power OFF the machine → Wait 60 seconds → Power ON. Many codes are temporary!
+        </div>
+
+        <!-- COMPATIBLE MODELS -->
+        <div class="model-list">
+            <span class="model-tag">bizhub 223</span>
+            <span class="model-tag">bizhub 283</span>
+            <span class="model-tag">bizhub 363</span>
+            <span class="model-tag">bizhub 423</span>
+            <span class="model-tag">bizhub C220</span>
+            <span class="model-tag">bizhub C280</span>
+            <span class="model-tag">bizhub C360</span>
+            <span class="model-tag">bizhub C454</span>
+            <span class="model-tag">bizhub C554</span>
+        </div>
+
+        <!-- SEARCH -->
+        <input type="text" class="search-box" id="search-input" placeholder="🔍 Search error code e.g. C2201, C3451..." oninput="filterErrors()">
+
+        <!-- CATEGORY TABS -->
+        <div class="tabs">
+            <div class="tab active" onclick="showCategory('all')">All Codes</div>
+            <div class="tab" onclick="showCategory('C0')">C0xx — Engine</div>
+            <div class="tab" onclick="showCategory('C2')">C2xx — Paper Feed</div>
+            <div class="tab" onclick="showCategory('C3')">C3xx — Image Quality</div>
+            <div class="tab" onclick="showCategory('C4')">C4xx — Communication</div>
+            <div class="tab" onclick="showCategory('C5')">C5xx — Controller</div>
+            <div class="tab" onclick="showCategory('C6')">C6xx — Fuser</div>
+            <div class="tab" onclick="showCategory('Other')">Other Codes</div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- ALL ERROR CODES -->
+        <!-- ============================================== -->
+        <div id="all-errors" class="category-section show">
+
+            <!-- C02xx — TRAY / PAPER FEED RELATED -->
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C0202</div>
+                <div class="error-cause"><strong>Cause:</strong> Tray 1 lift-up failure. The tray lift motor cannot raise the paper tray.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Pull out Tray 1 completely → check for obstructions or paper jams<br>
+                    2. Check paper is loaded correctly and under the paper guides<br>
+                    3. Check lift wire/gear mechanism inside the machine<br>
+                    4. If persistent → Replace Tray 1 lift motor or sensor<br>
+                    5. Reset: Utility/Counter → Stop → 00 → Stop → 01 → Clear Error
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C0204</div>
+                <div class="error-cause"><strong>Cause:</strong> Tray 2 lift-up failure.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Pull out Tray 2 → check for paper jams or foreign objects<br>
+                    2. Remove and re-stack paper properly<br>
+                    3. Check gears and wire cable at the back of the tray<br>
+                    4. Check lift motor operation<br>
+                    5. Power cycle machine → Clear error in Service Mode
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C0206</div>
+                <div class="error-cause"><strong>Cause:</strong> Tray 3 lift-up failure (optional lower tray).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Check Tray 3 installation — ensure it's pushed in fully<br>
+                    2. Check paper size setting matches actual paper<br>
+                    3. Check lift motor and sensor harness<br>
+                    4. Verify optional tray unit is connected properly
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C0208</div>
+                <div class="error-cause"><strong>Cause:</strong> Tray 4 lift-up failure (large capacity tray/LCT).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Check LCT connection and power<br>
+                    2. Check paper stack height and loading<br>
+                    3. Check lift belt and motor<br>
+                    4. Check communication cable between main body and LCT
+                </div>
+            </div>
+
+            <!-- C04xx — COMMUNICATION / I/F -->
+            <div class="error-card" data-category="C4">
+                <div class="error-code">C0400</div>
+                <div class="error-cause"><strong>Cause:</strong> Communication error between Main Board (MFPB) and Printer Control Board (PRCB).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → wait 2 minutes → Power ON<br>
+                    2. Check all flat ribbon cables connecting boards — reseat them<br>
+                    3. Check for bent pins or damaged connectors<br>
+                    4. If persistent → Check firmware versions match<br>
+                    5. Replace PRCB or MFPB board as last resort
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C4">
+                <div class="error-code">C0451</div>
+                <div class="error-cause"><strong>Cause:</strong> Image transfer control communication error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power cycle the machine<br>
+                    2. Reseat connectors on Transfer Unit and image processing board<br>
+                    3. Check for dirt or toner buildup on connectors<br>
+                    4. Check transfer belt unit is installed correctly
+                </div>
+            </div>
+
+            <!-- C05xx — CONTROLLER / ENGINE CONTROL -->
+            <div class="error-card" data-category="C5">
+                <div class="error-code">C0500</div>
+                <div class="error-cause"><strong>Cause:</strong> Controller startup error / malfunction. The machine cannot boot up properly.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → unplug from wall → wait 5 minutes → replug → Power ON<br>
+                    2. Check voltage/power supply — use surge protector<br>
+                    3. Enter Service Mode → Utility/Counter → Stop → 00 → Stop → 01<br>
+                    4. Clear error history → Restart<br>
+                    5. If still error → Format HDD or reinstall firmware<br>
+                    6. Last resort → Replace Controller Board
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C5">
+                <div class="error-code">C0510</div>
+                <div class="error-cause"><strong>Cause:</strong> Hard Disk Drive (HDD) error / failure.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power cycle machine<br>
+                    2. Enter Service Mode → Format HDD<br>
+                    3. If formatting fails → Replace HDD<br>
+                    4. Note: HDD stores address books, jobs, logs — backup if possible first
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C5">
+                <div class="error-code">C0550</div>
+                <div class="error-cause"><strong>Cause:</strong> Scanner control board communication error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Open and close scanner lid firmly<br>
+                    2. Check flat cable connection between scanner and main body<br>
+                    3. Power cycle machine<br>
+                    4. Check scanner lamp and home sensor operation
+                </div>
+            </div>
+
+            <!-- C06xx — FUSER / HEATING UNIT (CRITICAL) -->
+            <div class="error-card" data-category="C6">
+                <div class="error-code">C0601</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser temperature abnormal / warm-up failure. The heating roller is not reaching operating temperature.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — CAUTION: Fuser gets HOT! Let cool first:</strong><br>
+                    1. Power OFF → Wait 10 minutes for unit to cool<br>
+                    2. Check Fuser unit is locked in place correctly<br>
+                    3. Check Fuser power connector — reseat it<br>
+                    4. Check Thermistor (temperature sensor) — clean or replace<br>
+                    5. Check Heater Lamp or Heating Element continuity<br>
+                    6. Reset: Service Mode → System 2 → Error History → Clear<br>
+                    ⚠️ If returns frequently → Replace Thermistor or Fuser Unit
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C6">
+                <div class="error-code">C0602</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser overheat error. Temperature exceeded safe limit.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — ⚠️ SAFETY FIRST — let cool completely:</strong><br>
+                    1. Power OFF immediately — do not keep running<br>
+                    2. Wait 20–30 minutes to cool down<br>
+                    3. Check ventilation slots — clear dust and obstructions<br>
+                    4. Check cooling fan operation<br>
+                    5. Check Thermistor for damage or poor contact<br>
+                    6. Clear error in Service Mode after cooling<br>
+                    ⚠️ If recurs → Replace Fuser Unit — fire risk if ignored!
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C6">
+                <div class="error-code">C0610</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser pressure release mechanism failure (usually colour machines).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → remove Fuser unit<br>
+                    2. Check pressure release lever and gears for damage or obstruction<br>
+                    3. Clean and lubricate pivot points sparingly<br>
+                    4. Reinstall Fuser firmly → Power ON → Clear error
+                </div>
+            </div>
+
+            <!-- C22xx — TONER / DEVELOPER RELATED -->
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C2201</div>
+                <div class="error-cause"><strong>Cause:</strong> Black toner supply error / toner motor lock.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove Black Toner Bottle — shake gently side to side<br>
+                    2. Check bottle is not empty or near-empty<br>
+                    3. Check toner bottle drive gear is not stripped<br>
+                    4. Check toner supply path for blockage<br>
+                    5. Reinstall bottle firmly → Power cycle
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C2202</div>
+                <div class="error-cause"><strong>Cause:</strong> Cyan toner supply error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove Cyan toner bottle → shake well<br>
+                    2. Check bottle rotation motor<br>
+                    3. Check toner hopper level sensor<br>
+                    4. Replace bottle if empty or faulty
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C2203</div>
+                <div class="error-cause"><strong>Cause:</strong> Magenta toner supply error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove Magenta bottle → check for drive gear damage<br>
+                    2. Shake bottle to redistribute toner<br>
+                    3. Check supply auger for blockage<br>
+                    4. Reinstall → Power cycle → Clear error
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C2">
+                <div class="error-code">C2204</div>
+                <div class="error-cause"><strong>Cause:</strong> Yellow toner supply error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove Yellow bottle → inspect<br>
+                    2. Check toner is not caked or hardened<br>
+                    3. Check drive motor and gears<br>
+                    4. Replace bottle if issue persists
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C2550</div>
+                <div class="error-cause"><strong>Cause:</strong> Black developer unit failure / toner density sensor error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Enter Service Mode → Check developer counters<br>
+                    2. Remove Black Developer Unit → check for developer spillage<br>
+                    3. Clean Density Sensor (ID sensor) with dry lint-free cloth<br>
+                    4. Check connector on developer unit<br>
+                    5. If developer near end-of-life → Replace Developer Unit<br>
+                    6. Run Auto Toner Density Adjustment in Service Mode
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C2551</div>
+                <div class="error-cause"><strong>Cause:</strong> Cyan developer density sensor error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove Cyan Developer Unit<br>
+                    2. Clean ID sensor and LED lens<br>
+                    3. Check developer material level and condition<br>
+                    4. Check unit connectors and wiring<br>
+                    5. Run auto calibration after reinstall
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C2552</div>
+                <div class="error-cause"><strong>Cause:</strong> Magenta developer density sensor error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Same as C2551 — check Magenta developer unit<br>
+                    2. Clean sensor thoroughly — toner dust causes false readings<br>
+                    3. Check for developer leaks or spillage inside machine
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C2553</div>
+                <div class="error-cause"><strong>Cause:</strong> Yellow developer density sensor error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Clean Yellow ID sensor<br>
+                    2. Check developer unit drive coupling<br>
+                    3. Replace developer if counter is over spec<br>
+                    4. Perform auto colour calibration
+                </div>
+            </div>
+
+            <!-- C34xx — LASER / SCANNER RELATED -->
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C3401</div>
+                <div class="error-cause"><strong>Cause:</strong> Polygon motor failure — Black laser scanner unit not spinning.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Wait a few minutes → Power ON<br>
+                    2. Check scanner unit fan operation<br>
+                    3. Remove and reseat Laser Unit<br>
+                    4. Check for dust or toner inside laser window<br>
+                    5. If persistent → Replace Polygon Motor or Laser Unit
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C3402</div>
+                <div class="error-cause"><strong>Cause:</strong> Polygon motor failure — Colour laser scanner unit.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Same as C3401 — check colour scanner motor<br>
+                    2. Check cooling fan above scanner unit<br>
+                    3. Check harness connections<br>
+                    4. Replace scanner unit if motor won't start
+                </div>
+            </div>
+
+            <!-- C38xx — IMAGE TRANSFER / DRUM RELATED -->
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C3801</div>
+                <div class="error-cause"><strong>Cause:</strong> Transfer belt separation error or home position sensor fault.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Remove Transfer Belt Unit<br>
+                    2. Clean belt surface gently with dry cloth — do NOT use liquid<br>
+                    3. Check separation claws and home position sensor<br>
+                    4. Check belt drive gears for damage<br>
+                    5. Reinstall firmly → Power ON → Clear error
+                </div>
+            </div>
+
+            <div class="error-card" data-category="C3">
+                <div class="error-code">C3810</div>
+                <div class="error-cause"><strong>Cause:</strong> Drum unit communication or home position error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove and reinstall Drum Unit<br>
+                    2. Check drum unit connector pins — clean if needed<br>
+                    3. Check drum rotation is not obstructed<br>
+                    4. Check drum counter — replace if end-of-life reached
+                </div>
+            </div>
+
+            <!-- MISCELLANEOUS / OTHER CODES -->
+            <div class="error-card" data-category="Other">
+                <div class="error-code">JAM Codes (Paper Misfeed)</div>
+                <div class="error-cause"><strong>Cause:</strong> Paper detected but not reaching sensor in time. Can be in Tray, Feed, Transport, Fuser, or Exit areas.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — General Jam Clearing:</strong><br>
+                    1. Follow on-screen path indicators — open indicated doors<br>
+                    2. Remove paper GENTLY — tearing leaves scraps that cause repeat jams<br>
+                    3. Check BOTH sides of every paper path — upper AND lower<br>
+                    4. Check paper size setting matches loaded paper<br>
+                    5. Check paper quality — damp or thin paper causes frequent jams<br>
+                    6. Check feed and separation rollers — clean or replace if shiny/worn
+                </div>
+            </div>
+
+            <div class="error-card" data-category="Other">
+                <div class="error-code">Service Mode Access</div>
+                <div class="error-cause"><strong>Purpose:</strong> Clear errors, view counters, run calibrations, change settings.</div>
+                <div class="error-solution">
+                    <strong>✅ How to Enter Service Mode:</strong><br>
+                    1. Press: <strong>Utility / Counter</strong> button<br>
+                    2. Press: <strong>Stop → 0 → 0 → Stop → 0 → 1</strong><br>
+                    3. Enter password if required (usually 00000000 or 12345678)<br>
+                    4. Navigate: System 2 → Error History → Select Code → Delete<br>
+                    ⚠️ Don't change settings you don't understand — can damage machine!
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ⚠️ DISCLAIMER -->
+        <div class="disclaimer">
+            ⚠️ This reference guide is for <strong>general informational purposes only</strong> — it does not replace official Konica Minolta service documentation.<br>
+            ⚠️ Working on office equipment involves electrical and moving parts hazards — power off before removing covers when safe.<br>
+            ⚠️ Always consult a certified technician for complex repairs, especially involving fuser units, laser scanners, and high-voltage components.<br>
+            Not affiliated with Konica Minolta, Inc. Brand names are for reference only.
+        </div>
+    </div>
+</div>
+
+<script>
+// 🔑 PASSWORD
+const PASSWORD = "KMtech2026";
+let allErrorCards = [];
+
+function checkPassword() {
+    if (document.getElementById("password-input").value === PASSWORD) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        allErrorCards = document.querySelectorAll('.error-card');
+    } else {
+        document.getElementById("wrong-pass").style.display = "block";
+    }
+}
+
+function showCategory(cat) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    allErrorCards.forEach(card => {
+        const catAttr = card.dataset.category;
+        if (cat === 'all' || catAttr.startsWith(cat)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    document.getElementById('search-input').value = '';
+}
+
+function filterErrors() {
+    const term = document.getElementById('search-input').value.trim().toUpperCase();
+    if (!term) {
+        allErrorCards.forEach(card => card.style.display = 'block');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.tab').classList.add('active');
+        return;
+    }
+    
+    allErrorCards.forEach(card => {
+        const codeText = card.querySelector('.error-code').textContent.toUpperCase();
+        if (codeText.includes(term)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
