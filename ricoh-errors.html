@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ricoh — Error Codes & Solutions Reference</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #232526, #414345, #63666A);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        /* 🔐 PASSWORD SCREEN */
+        #password-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 80vh; text-align: center;
+        }
+        #password-screen h2 { font-size: 26px; margin-bottom: 20px; }
+        #password-screen input {
+            padding: 15px; font-size: 18px; border-radius: 10px; border: none;
+            width: 280px; text-align: center; margin-bottom: 15px;
+        }
+        #password-screen button {
+            padding: 15px 40px; font-size: 18px; font-weight: bold;
+            background: #00A651; color: white; border: none; border-radius: 10px; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #password-screen button:hover { transform: scale(1.05); }
+        .error-msg { color: #feb2b2; margin-top: 10px; display: none; }
+
+        /* MAIN CONTENT */
+        #main-content { display: none; }
+        .container { max-width: 480px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 22px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+
+        .price-banner {
+            background: linear-gradient(90deg, #00A651, #008C45);
+            color: #fff; font-weight: bold; text-align: center;
+            padding: 12px; border-radius: 12px; margin-bottom: 20px; font-size: 16px;
+        }
+
+        .bank-box {
+            background: rgba(0, 166, 81, 0.15); border: 2px solid #00A651;
+            border-radius: 12px; padding: 15px; text-align: center; margin-bottom: 25px;
+        }
+        .bank-box h3 { margin-bottom: 8px; font-size: 16px; }
+        .bank-detail { font-size: 15px; font-weight: 600; margin: 4px 0; }
+
+        /* CATEGORY TABS */
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; justify-content: center; }
+        .tab {
+            padding: 10px 14px; background: rgba(255,255,255,0.15); border-radius: 8px; cursor: pointer;
+            font-size: 14px; font-weight: 500; transition: all 0.2s;
+        }
+        .tab:hover { background: rgba(255,255,255,0.25); }
+        .tab.active { background: #00A651; color: #fff; }
+
+        /* SEARCH BOX */
+        .search-box {
+            width: 100%; padding: 12px; border-radius: 10px; border: none;
+            font-size: 16px; margin-bottom: 20px; color: #2d3748;
+        }
+
+        /* ERROR CODE CARDS */
+        .error-card {
+            background: rgba(255,255,255,0.96); color: #2d3748;
+            border-radius: 14px; padding: 16px; margin-bottom: 12px;
+            border-left: 4px solid #e53e3e;
+        }
+        .error-code {
+            font-size: 20px; font-weight: bold; color: #c53030; margin-bottom: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .error-cause { margin-bottom: 6px; }
+        .error-cause strong { color: #2b6cb0; }
+        .error-solution { background: #f0fff4; padding: 10px; border-radius: 8px; border-left: 3px solid #00A651; }
+        .error-solution strong { color: #008C45; }
+
+        .quick-fix {
+            background: #fef5e7; padding: 10px; border-radius: 8px; margin-bottom: 10px;
+            border-left: 3px solid #ed8936;
+        }
+        .quick-fix strong { color: #c05621; }
+
+        .back-btn {
+            background: #2b6cb0; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; margin-top: 15px; font-size: 15px;
+        }
+
+        .disclaimer {
+            text-align: center; font-size: 11px; opacity: 0.8; margin-top: 30px;
+            padding: 15px; background: rgba(0,0,0,0.15); border-radius: 10px; line-height: 1.5;
+        }
+
+        .category-section { display: none; }
+        .category-section.show { display: block; }
+
+        .model-list {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+        }
+        .model-tag {
+            background: rgba(255,255,255,0.15); padding: 6px 12px; border-radius: 20px; font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="password-screen">
+    <div style="font-size:60px; margin-bottom:15px;">🖨️</div>
+    <h2>Ricoh Error Codes & Solutions</h2>
+    <p style="margin-bottom:20px; opacity:0.9">Complete Reference Guide</p>
+    <input type="password" id="password-input" placeholder="Enter your access code...">
+    <br><br>
+    <button onclick="checkPassword()">🔓 UNLOCK REFERENCE</button>
+    <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
+</div>
+
+<!-- ✅ MAIN CONTENT (UNLOCKED) -->
+<div id="main-content">
+    <div class="container">
+        <div class="header">
+            <div style="font-size:50px; margin-bottom:10px;">🖨️</div>
+            <h1>Ricoh Error Codes & Solutions</h1>
+            <p>Aficio • MP Series • Complete Troubleshooting</p>
+        </div>
+
+        <div class="price-banner">
+            💰 R20 Once-Off — Access Forever! Updated Regularly
+        </div>
+
+        <!-- 💳 BANK DETAILS -->
+        <div class="bank-box">
+            <h3>💳 Payment Details</h3>
+            <div class="bank-detail">🏦 Capitec Bank</div>
+            <div class="bank-detail">🔢 Account: 1550798756</div>
+            <div class="bank-detail">✍️ Ref: Ricoh Errors + Your Name</div>
+        </div>
+
+        <!-- ⚡ FIRST STEP -->
+        <div class="quick-fix">
+            <strong>⚡ FIRST STEP — Try this before anything else:</strong><br>
+            Power OFF the main switch → Wait 10–30 seconds → Power ON. Many SC codes are temporary!
+        </div>
+
+        <!-- COMPATIBLE MODELS -->
+        <div class="model-list">
+            <span class="model-tag">Aficio MP 2014</span>
+            <span class="model-tag">MP 2501</span>
+            <span class="model-tag">MP 301</span>
+            <span class="model-tag">MP 4002</span>
+            <span class="model-tag">MP 5002</span>
+            <span class="model-tag">MP C3002</span>
+            <span class="model-tag">MP C3502</span>
+            <span class="model-tag">MP C4502</span>
+            <span class="model-tag">MP C5502</span>
+            <span class="model-tag">MP C6003</span>
+        </div>
+
+        <!-- SEARCH -->
+        <input type="text" class="search-box" id="search-input" placeholder="🔍 Search code e.g. SC542, SC302..." oninput="filterErrors()">
+
+        <!-- CATEGORY TABS -->
+        <div class="tabs">
+            <div class="tab active" onclick="showCategory('all')">All Codes</div>
+            <div class="tab" onclick="showCategory('SC3')">SC3xx — Laser/Scanner</div>
+            <div class="tab" onclick="showCategory('SC4')">SC4xx — Image/Transfer</div>
+            <div class="tab" onclick="showCategory('SC5')">SC5xx — Fuser/Temp</div>
+            <div class="tab" onclick="showCategory('SC6')">SC6xx — Comm/System</div>
+            <div class="tab" onclick="showCategory('SC7')">SC7xx — Toner/Drum</div>
+            <div class="tab" onclick="showCategory('SC8')">SC8xx — HDD/Software</div>
+            <div class="tab" onclick="showCategory('Other')">Paper Jams & Service</div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- ALL ERROR CODES -->
+        <!-- ============================================== -->
+        <div id="all-errors" class="category-section show">
+
+            <!-- ============================================== -->
+            <!-- SC3xx — LASER / SCANNER / EXPOSURE -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC3">
+                <div class="error-code">SC302</div>
+                <div class="error-cause"><strong>Cause:</strong> Polygon motor error — Laser scanner motor not reaching operating speed.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Wait a few minutes → Power ON<br>
+                    2. Check laser unit connection and flat cable<br>
+                    3. Clean laser glass window — dust blocks beam<br>
+                    4. Check cooling fan near laser unit<br>
+                    5. If persists → Replace polygon motor or laser unit
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC3">
+                <div class="error-code">SC320</div>
+                <div class="error-cause"><strong>Cause:</strong> Laser beam detection error — LD (Laser Diode) malfunction.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power cycle machine<br>
+                    2. Check laser unit connector is fully seated<br>
+                    3. Check for obstruction in laser path<br>
+                    4. Replace laser diode unit if persistent
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC3">
+                <div class="error-code">SC340</div>
+                <div class="error-cause"><strong>Cause:</strong> Scanner home position sensor error — exposure lamp not finding home.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Open and close scanner glass cover<br>
+                    2. Clean scanner glass and white reference plate<br>
+                    3. Check scanner cable (flat flex cable) at both ends<br>
+                    4. Check scanner lamp operation<br>
+                    5. Lubricate scanner rail sparingly
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SC4xx — IMAGE TRANSFER / DRUM / BIAS -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC4">
+                <div class="error-code">SC400</div>
+                <div class="error-cause"><strong>Cause:</strong> Drum charge corona error — abnormal charging current detected.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Remove drum unit<br>
+                    2. Clean corona wire or grid — use cleaning brush<br>
+                    3. Check corona unit connector and high-voltage contacts<br>
+                    4. Check drum surface for scratches or damage<br>
+                    5. Replace corona assembly or drum unit as needed
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC4">
+                <div class="error-code">SC401</div>
+                <div class="error-cause"><strong>Cause:</strong> Transfer current error — primary transfer roller/bias malfunction.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove transfer belt/roller unit<br>
+                    2. Clean transfer roller contacts — avoid touching with bare hands<br>
+                    3. Check high-voltage power supply harness<br>
+                    4. Replace transfer roller/belt if worn or damaged
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC4">
+                <div class="error-code">SC411</div>
+                <div class="error-cause"><strong>Cause:</strong> Development bias error — abnormal voltage to developer unit.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove developer unit → check connector pins<br>
+                    2. Check developer material level and condition<br>
+                    3. Clean developer unit sensor contacts<br>
+                    4. Check high-voltage power supply board<br>
+                    5. Replace developer if counter is expired
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC4">
+                <div class="error-code">SC440</div>
+                <div class="error-cause"><strong>Cause:</strong> Drum motor lock error — drum unit not rotating at correct speed.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Remove drum unit<br>
+                    2. Check drum is not locked or jammed — rotate by hand gently<br>
+                    3. Check drive gears and couplings for damage<br>
+                    4. Check drum motor connector<br>
+                    5. Replace drum motor or drive gear assembly
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SC5xx — FUSER / TEMPERATURE (MOST COMMON!) -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC5">
+                <div class="error-code">SC542</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser temperature not rising — warm-up failure. The most common Ricoh error code!</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — ⚠️ CAUTION: Fuser gets HOT! Cool down first:</strong><br>
+                    1. Power OFF → Wait 10–15 minutes to cool<br>
+                    2. Check fuser unit is fully inserted and locked<br>
+                    3. Check fuser power connector — reseat firmly<br>
+                    4. ⚠️ Reset the code: Enter Service Mode → Mode → 5 → # → 810 → Execute → Yes/On<br>
+                    5. If returns immediately → Check thermistor, thermofuse, or heater lamp/element<br>
+                    6. Replace fuser unit parts as needed
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC5">
+                <div class="error-code">SC541</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser temperature too low during standby / initial warm-up.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Same as SC542 — cool down first<br>
+                    2. Check power supply voltage is stable — use surge protector<br>
+                    3. Check fuser heater lamp continuity<br>
+                    4. Check thermistor contact against roller<br>
+                    5. Reset in Service Mode — Function 5-810<br>
+                    ⚠️ If code returns → Do NOT keep resetting — risk of fire! Replace fuser parts.
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC5">
+                <div class="error-code">SC543</div>
+                <div class="error-cause"><strong>Cause:</strong> Fuser overheat detected — temperature exceeded safe limit.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — ⚠️ SAFETY FIRST — let cool completely:</strong><br>
+                    1. Power OFF immediately — do NOT keep running<br>
+                    2. Wait 20–30 minutes to cool down fully<br>
+                    3. Check ventilation slots — clear all dust and obstructions<br>
+                    4. Check fuser cooling fan is working<br>
+                    5. Clean thermistor — buildup causes false readings<br>
+                    6. Reset in Service Mode after cooling<br>
+                    ⚠️ Critical fault — if recurs, replace fuser unit!
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC5">
+                <div class="error-code">SC550</div>
+                <div class="error-cause"><strong>Cause:</strong> Pressure roller temperature sensor error (colour machines often).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Remove fuser unit<br>
+                    2. Check pressure roller thermistor wiring<br>
+                    3. Clean sensor contact point<br>
+                    4. Check pressure roller is not damaged<br>
+                    5. Reinstall → Reset → Power ON
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SC6xx — COMMUNICATION / SYSTEM / CONTROL -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC6">
+                <div class="error-code">SC620</div>
+                <div class="error-cause"><strong>Cause:</strong> Communication error between main controller and engine board.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Unplug from wall → Wait 5 minutes → Restart<br>
+                    2. Check all flat cables and connectors between boards — reseat<br>
+                    3. Check for bent pins or damaged connectors<br>
+                    4. Update firmware if possible<br>
+                    5. Replace controller board or engine board as last resort
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC6">
+                <div class="error-code">SC670</div>
+                <div class="error-cause"><strong>Cause:</strong> Controller startup error — machine control board not booting correctly.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Unplug → Wait 5 minutes → Restart<br>
+                    2. Check power source is clean and stable<br>
+                    3. Remove and reinsert memory chips/SD card if accessible<br>
+                    4. Check firmware SD card — reflash if needed<br>
+                    5. Replace controller board if hardware failure
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC6">
+                <div class="error-code">SC681</div>
+                <div class="error-cause"><strong>Cause:</strong> Network board / interface error — internal network card malfunction.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power cycle machine<br>
+                    2. Disconnect network cable → Power ON without cable<br>
+                    3. Check network board connection — reseat<br>
+                    4. Reset network settings to default<br>
+                    5. Replace network board if hardware fault
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SC7xx — TONER / DEVELOPER / DRUM RELATED -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC7">
+                <div class="error-code">SC720</div>
+                <div class="error-cause"><strong>Cause:</strong> Toner bottle motor error — toner supply bottle not rotating.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove toner bottle → check for blockage<br>
+                    2. Shake toner bottle gently to redistribute toner<br>
+                    3. Check bottle drive gear — not stripped or jammed<br>
+                    4. Check toner supply port for hardened toner<br>
+                    5. Reinstall bottle firmly → Power cycle
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC7">
+                <div class="error-code">SC722</div>
+                <div class="error-cause"><strong>Cause:</strong> Toner density sensor error — developer unit not detecting correct toner ratio.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Enter Service Mode → Check developer counter<br>
+                    2. Remove developer unit → clean ID sensor with dry cloth<br>
+                    3. Check developer material level and condition<br>
+                    4. Run auto toner calibration<br>
+                    5. Replace developer unit if counter expired
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC7">
+                <div class="error-code">SC726</div>
+                <div class="error-cause"><strong>Cause:</strong> Drum unit recognition error — chip or communication fault.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove drum unit → clean the contact chip with dry cloth<br>
+                    2. Check drum unit connector pins inside machine<br>
+                    3. Reinstall drum firmly → Power cycle<br>
+                    4. Replace drum chip or entire drum unit<br>
+                    5. Enter correct region code if recently moved
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC7">
+                <div class="error-code">SC792</div>
+                <div class="error-cause"><strong>Cause:</strong> Waste toner bottle full or sensor error.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Remove waste toner bottle — empty carefully (do NOT inhale toner dust)<br>
+                    2. Clean bottle sensor window and sensor inside machine<br>
+                    3. Reinstall empty bottle → Reset counter if required<br>
+                    4. If new bottle still shows error → Replace sensor or bottle
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SC8xx — HDD / MEMORY / SOFTWARE -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="SC8">
+                <div class="error-code">SC819</div>
+                <div class="error-cause"><strong>Cause:</strong> Hard disk drive error — read/write failure or bad sectors.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power cycle machine<br>
+                    2. Enter Service Mode → Format HDD<br>
+                    3. Note: All stored jobs, address book, settings will be erased<br>
+                    4. If formatting fails → Replace HDD<br>
+                    5. Restore firmware and settings after HDD replacement
+                </div>
+            </div>
+
+            <div class="error-card" data-category="SC8">
+                <div class="error-code">SC820</div>
+                <div class="error-cause"><strong>Cause:</strong> Software / firmware error — program crash or corrupted data.</div>
+                <div class="error-solution">
+                    <strong>✅ Solution:</strong><br>
+                    1. Power OFF → Wait 2 minutes → Power ON<br>
+                    2. Update/reflash firmware from SD card<br>
+                    3. Check SD card for corruption<br>
+                    4. Replace controller board if persistent
+                </div>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- PAPER JAMS & SERVICE MODE -->
+            <!-- ============================================== -->
+            <div class="error-card" data-category="Other">
+                <div class="error-code">Paper Jam Codes (Jxxx)</div>
+                <div class="error-cause"><strong>Cause:</strong> Paper misfeed — indicated by location code (tray 1/2/3, feed, transport, fuser, exit).</div>
+                <div class="error-solution">
+                    <strong>✅ Solution — General Jam Clearing:</strong><br>
+                    1. Follow on-screen LED indicators — open correct doors/panels<br>
+                    2. Remove paper GENTLY — tearing leaves scraps that repeat jam<br>
+                    3. Check BOTH sides of paper path — upper AND lower<br>
+                    4. Check paper size setting matches loaded paper<br>
+                    5. Use good quality dry paper — damp paper causes constant jams<br>
+                    6. Clean feed and separation rollers — alcohol wipe or replace if shiny/worn
+                </div>
+            </div>
+
+            <div class="error-card" data-category="Other">
+                <div class="error-code">🔧 Service Mode Access</div>
+                <div class="error-cause"><strong>Purpose:</strong> Reset fuser errors (SC542), view counters, calibrate, change settings.</div>
+                <div class="error-solution">
+                    <strong>✅ How to Enter Service Mode (Most Ricoh models):</strong><br>
+                    1. Press: <strong>Clear Modes (yellow button)</strong><br>
+                    2. Press: <strong>1 → 0 → 7</strong><br>
+                    3. Hold down: <strong>Clear / Stop (red button)</strong> for about 5 seconds until screen changes<br>
+                    4. Navigate: <strong>System Settings</strong> or <strong>Maintenance</strong> menu<br>
+                    5. To reset SC542: Select <strong>Mode 5 → # → 810 → Execute / On</strong><br>
+                    ⚠️ Don't change settings you don't understand — can damage machine!
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ⚠️ DISCLAIMER -->
+        <div class="disclaimer">
+            ⚠️ This reference guide is for <strong>general informational purposes only</strong> — it does not replace official Ricoh service documentation.<br>
+            ⚠️ Working on office equipment involves electrical shock, heat, and moving part hazards — always power OFF before removing covers.<br>
+            ⚠️ Fuser units operate at high temperatures — allow cooling before servicing. Resetting SC542 repeatedly without fixing the root cause can create a fire risk.<br>
+            Always consult a certified Ricoh technician for complex repairs. Not affiliated with Ricoh Company, Ltd. Brand names are for reference only.
+        </div>
+    </div>
+</div>
+
+<script>
+// 🔑 PASSWORD
+const PASSWORD = "RicohTech2026";
+let allErrorCards = [];
+
+function checkPassword() {
+    if (document.getElementById("password-input").value === PASSWORD) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        allErrorCards = document.querySelectorAll('.error-card');
+    } else {
+        document.getElementById("wrong-pass").style.display = "block";
+    }
+}
+
+function showCategory(cat) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    allErrorCards.forEach(card => {
+        const catAttr = card.dataset.category;
+        if (cat === 'all' || catAttr.startsWith(cat)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    document.getElementById('search-input').value = '';
+}
+
+function filterErrors() {
+    const term = document.getElementById('search-input').value.trim().toUpperCase();
+    if (!term) {
+        allErrorCards.forEach(card => card.style.display = 'block');
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelector('.tab').classList.add('active');
+        return;
+    }
+    
+    allErrorCards.forEach(card => {
+        const codeText = card.querySelector('.error-code').textContent.toUpperCase();
+        if (codeText.includes(term)) {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+</script>
+
+</body>
+</html>
