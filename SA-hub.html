@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en-ZA">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SA Digital Product Hub — All 5 in One!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
+        body {
+            background: linear-gradient(135deg, #1a365d, #2c5282, #3182ce);
+            min-height: 100vh;
+            padding: 20px;
+            color: #fff;
+        }
+
+        /* 🔐 PASSWORD SCREEN */
+        #password-screen {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 80vh; text-align: center;
+        }
+        #password-screen h2 { font-size: 26px; margin-bottom: 20px; }
+        #password-screen input {
+            padding: 15px; font-size: 18px; border-radius: 10px; border: none;
+            width: 280px; text-align: center; margin-bottom: 15px;
+        }
+        #password-screen button {
+            padding: 15px 40px; font-size: 18px; font-weight: bold;
+            background: #48bb78; color: white; border: none; border-radius: 10px; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        #password-screen button:hover { transform: scale(1.05); }
+        .error-msg { color: #feb2b2; margin-top: 10px; display: none; }
+
+        /* MAIN CONTENT */
+        #main-content { display: none; }
+        .container { max-width: 450px; margin: 0 auto; }
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 15px; }
+
+        .price-banner {
+            background: linear-gradient(90deg, #f6ad55, #ed8936);
+            color: #1a202c; font-weight: bold; text-align: center;
+            padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 18px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+            border-radius: 16px; padding: 20px; margin-bottom: 15px;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .product-card:hover { transform: translateY(-3px); background: rgba(255,255,255,0.25); }
+        .product-card h3 { font-size: 18px; margin-bottom: 8px; }
+        .product-card p { font-size: 14px; opacity: 0.9; line-height: 1.5; }
+
+        .content-area {
+            background: rgba(255,255,255,0.96); color: #2d3748;
+            border-radius: 16px; padding: 22px; margin-top: 15px; display: none;
+        }
+        .content-area.show { display: block; }
+        .content-area h2 { color: #2b6cb0; margin-bottom: 15px; font-size: 19px; }
+        .content-area h3 { color: #2f855a; margin: 15px 0 8px; font-size: 16px; }
+        .content-area p { font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+        .place-card {
+            padding: 12px; border-bottom: 1px dashed #cbd5e0; border-radius: 8px; margin-bottom: 8px;
+            background: #f7fafc;
+        }
+        .place-card:last-child { border-bottom: none; }
+        .place-name { font-weight: bold; font-size: 15px; margin-bottom: 3px; }
+        .place-details { font-size: 14px; color: #4a5568; }
+        .toll-plaza {
+            padding: 6px 0; border-bottom: 1px dotted #e2e8f0; font-size: 15px;
+        }
+        .toll-plaza:last-child { border-bottom: none; }
+        .toll-name { font-weight: 600; }
+        .toll-cost { font-weight: bold; color: #c05621; float: right; }
+        .toll-summary {
+            background: #fffaf0; border-left: 4px solid #ed8936; padding: 10px;
+            border-radius: 8px; margin: 12px 0; font-size: 14px;
+        }
+
+        .back-btn {
+            background: #2b6cb0; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; margin-top: 15px; font-size: 15px;
+        }
+
+        .bank-box {
+            background: rgba(72, 187, 120, 0.2); border: 2px solid #48bb78;
+            border-radius: 12px; padding: 15px; text-align: center; margin: 25px 0;
+        }
+        .bank-box h3 { margin-bottom: 10px; font-size: 17px; }
+        .bank-detail { font-size: 16px; font-weight: 600; margin: 5px 0; }
+
+        .disclaimer {
+            text-align: center; font-size: 11px; opacity: 0.8; margin-top: 30px;
+            padding: 15px; background: rgba(0,0,0,0.15); border-radius: 10px; line-height: 1.5;
+        }
+
+        .daily-quote {
+            font-style: italic; color: #2b6cb0; border-left: 3px solid #48bb78;
+            padding-left: 12px; margin: 12px 0;
+        }
+        .generate-btn {
+            background: #ed8936; color: white; border: none; padding: 12px 25px;
+            border-radius: 8px; font-size: 16px; cursor: pointer; margin: 10px 0;
+        }
+        .numbers-display {
+            font-size: 22px; font-weight: bold; color: #2d3748;
+            background: #f7fafc; padding: 15px; border-radius: 10px; text-align: center;
+            margin: 12px 0; letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="password-screen">
+    <div style="font-size:60px; margin-bottom:15px;">🇿🇦</div>
+    <h2>SA Digital Product Hub</h2>
+    <p style="margin-bottom:20px; opacity:0.9">Unlock ALL 5 products with one password</p>
+    <input type="password" id="password-input" placeholder="Enter your access code...">
+    <br><br>
+    <button onclick="checkPassword()">🔓 UNLOCK EVERYTHING</button>
+    <p class="error-msg" id="wrong-pass">❌ Wrong password — try again!</p>
+</div>
+
+<!-- ✅ MAIN CONTENT (UNLOCKED) -->
+<div id="main-content">
+    <div class="container">
+        <div class="header">
+            <div style="font-size:50px; margin-bottom:10px;">🇿🇦</div>
+            <h1>SA Digital Product Hub</h1>
+            <p>All 5 Products • One Payment • One Password</p>
+        </div>
+
+        <div class="price-banner">
+            🎁 BUNDLE DEAL — ALL 5 FOR ONLY R80!
+        </div>
+
+        <!-- 💳 BANK DETAILS -->
+        <div class="bank-box">
+            <h3>💳 Payment Details</h3>
+            <div class="bank-detail">🏦 Capitec Bank</div>
+            <div class="bank-detail">🔢 Account: 1550798756</div>
+            <div class="bank-detail">✍️ Ref: SA Hub + Your Name</div>
+            <p style="margin-top:10px; font-size:13px; opacity:0.9">Send proof of payment & receive your password instantly!</p>
+        </div>
+
+        <h3 style="text-align:center; margin-bottom:20px; font-size:17px;">📋 Select a Product to Explore:</h3>
+
+        <!-- 📦 PRODUCT 1: DIGITAL COFFEE -->
+        <div class="product-card" onclick="showSection('coffee')">
+            <h3>☕ Digital Coffee</h3>
+            <p>Daily news • Weather updates • Market rates • Motivational quotes • Morning video briefing</p>
+        </div>
+
+        <!-- 📦 PRODUCT 2: LUCKY NUMBER PICK -->
+        <div class="product-card" onclick="showSection('lotto')">
+            <h3>🎱 Lucky Number Pick — SA</h3>
+            <p>Powerball generator • Lotto Pick 6 • Quick & easy • Generate fresh numbers anytime</p>
+        </div>
+
+        <!-- 📦 PRODUCT 3: BUSINESS & TAX -->
+        <div class="product-card" onclick="showSection('business')">
+            <h3>📊 SA Business & Tax Essentials</h3>
+            <p>SARS guides • Invoice templates • Startup plans • Budget tools • Grant application info</p>
+        </div>
+
+        <!-- 📦 PRODUCT 4: HOME HELPER -->
+        <div class="product-card" onclick="showSection('home')">
+            <h3>🏠 SA Home & Budget Helper</h3>
+            <p>Monthly budget planner • Bill tracker • Loadshedding schedules • Grocery lists • Important docs checklist</p>
+        </div>
+
+        <!-- 📦 PRODUCT 5: TRAVEL GUIDE -->
+        <div class="product-card" onclick="showSection('travel')">
+            <h3>🗺️ SA Offline Travel Guide</h3>
+            <p>Toll road costs • N3/N1/N2/N4 plazas & prices • KZN & Gauteng restaurants • Fuel stations • Works offline</p>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- ☕ SECTION 1: DIGITAL COFFEE -->
+        <!-- ============================================== -->
+        <div id="coffee" class="content-area">
+            <h2>☕ Digital Coffee — Your Daily Cup of Insight</h2>
+            
+            <h3>📰 Daily News & Updates</h3>
+            <p>Local South African news summaries, business headlines, and what's happening in KZN & Gauteng.</p>
+
+            <h3>🌤️ Weather Report</h3>
+            <p>Current conditions & forecast for Durban, Pietermaritzburg, Johannesburg & Pretoria.</p>
+
+            <h3>💹 Market & Exchange Rates</h3>
+            <p>Daily Rand updates, USD/GBP/EUR rates, and gold & platinum price indicators.</p>
+
+            <h3>💬 Daily Motivational Quote</h3>
+            <div class="daily-quote" id="daily-quote">
+                "Success is not final, failure is not fatal: it is the courage to continue that counts." — Winston Churchill
+            </div>
+
+            <p style="font-size:13px; color:#718096;">📌 New content added daily — always fresh!</p>
+            <button class="back-btn" onclick="hideSection('coffee')">← Back to All Products</button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- 🎱 SECTION 2: LUCKY NUMBER PICK -->
+        <!-- ============================================== -->
+        <div id="lotto" class="content-area">
+            <h2>🎱 Lucky Number Pick — SA</h2>
+            <p>Generate random numbers for South African National Lottery games. Quick, simple & fun!</p>
+
+            <h3>🔢 Lotto Pick 6 Generator</h3>
+            <button class="generate-btn" onclick="generateLotto()">🎲 Generate Lotto Numbers</button>
+            <div class="numbers-display" id="lotto-numbers">Click button above</div>
+
+            <h3>🔴⚪ Powerball Generator</h3>
+            <button class="generate-btn" onclick="generatePowerball()">🎲 Generate Powerball</button>
+            <div class="numbers-display" id="powerball-numbers">Click button above</div>
+
+            <p style="font-size:13px; color:#718096; margin-top:15px;">⚠️ For entertainment purposes only. Not affiliated with the National Lottery. Play responsibly. 18+</p>
+            <button class="back-btn" onclick="hideSection('lotto')">← Back to All Products</button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- 📊 SECTION 3: BUSINESS & TAX -->
+        <!-- ============================================== -->
+        <div id="business" class="content-area">
+            <h2>📊 SA Business & Tax Essentials</h2>
+
+            <h3>📋 SARS Guide & Deadlines</h3>
+            <p>Important tax dates, provisional tax, VAT registration, and how to submit your returns online.</p>
+
+            <h3>📄 Ready-to-Use Templates</h3>
+            <p>Professional invoice templates, quote templates, and receipt formats — ready to print or email.</p>
+
+            <h3>🚀 Startup & Small Business Guide</h3>
+            <p>How to register a PTY, CIPC requirements, business bank account tips, and budgeting for new businesses.</p>
+
+            <h3>💰 Grants & Funding Info</h3>
+            <p>Where to apply for small business grants, government incentives, and funding opportunities for SA entrepreneurs.</p>
+
+            <button class="back-btn" onclick="hideSection('business')">← Back to All Products</button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- 🏠 SECTION 4: HOME HELPER -->
+        <!-- ============================================== -->
+        <div id="home" class="content-area">
+            <h2>🏠 SA Home & Budget Helper</h2>
+
+            <h3>💰 Monthly Budget Planner</h3>
+            <p>Track your income vs expenses, see where your money goes, and set savings goals — simple spreadsheet format.</p>
+
+            <h3>📅 Bill Payment Tracker</h3>
+            <p>Never miss a due date — keep track of municipal accounts, levies, insurance, and subscription payments.</p>
+
+            <h3>⚡ Loadshedding Schedule Guide</h3>
+            <p>How to check your exact schedule, area codes, and alternative power-saving tips for Stage 1–6.</p>
+
+            <h3>🛒 Grocery & Shopping List</h3>
+            <p>Budget-friendly meal planning, price-comparison tips, and smart shopping lists to save money at Checkers, Pick n Pay & Woolworths.</p>
+
+            <h3>📁 Important Documents Checklist</h3>
+            <p>ID, passport, driver's license, birth certificates, title deeds, insurance policies — keep everything organized.</p>
+
+            <button class="back-btn" onclick="hideSection('home')">← Back to All Products</button>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- 🗺️ SECTION 5: TRAVEL GUIDE -->
+        <!-- ============================================== -->
+        <div id="travel" class="content-area">
+            <h2>🗺️ SA Offline Travel Guide — KZN & Gauteng</h2>
+            <p style="color:#718096; font-size:14px; margin-bottom:15px;">Costs are <strong>one-way</strong> for light vehicles / standard cars. Return = ×2. Always verify current tariffs before travel.</p>
+
+            <h3>🚗 N3 — Johannesburg ↔ Durban</h3>
+            <div class="toll-summary">
+                <strong>📍 Route:</strong> ~570km • <strong>4 toll plazas</strong> • ~R215–R240 one-way
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. De Hoek</span>
+                <span class="toll-cost">~R62</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. Wilge</span>
+                <span class="toll-cost">~R58</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">3. Tugela</span>
+                <span class="toll-cost">~R52</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">4. Mariannhill</span>
+                <span class="toll-cost">~R45</span>
+            </div>
+
+            <h3>🚗 N1 — Johannesburg ↔ Pretoria</h3>
+            <div class="toll-summary">
+                <strong>📍 Route:</strong> ~60km • <strong>1–2 plazas</strong> • ~R35–R105 one-way
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. Buccleuch</span>
+                <span class="toll-cost">~R36</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. Pumulani (optional)</span>
+                <span class="toll-cost">~R69</span>
+            </div>
+
+            <h3>🚗 N2 — Durban ↔ South Coast</h3>
+            <div class="toll-summary">
+                <strong>📍 Route:</strong> ~80–150km • <strong>1–2 plazas</strong> • ~R35–R85 one-way
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. Umgeni / Mvoti</span>
+                <span class="toll-cost">~R36</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. Oribi</span>
+                <span class="toll-cost">~R48</span>
+            </div>
+
+            <h3>🚗 N4 — Johannesburg ↔ Mpumalanga</h3>
+            <div class="toll-summary">
+                <strong>📍 Route:</strong> ~350km • <strong>3 plazas</strong> • ~R160–R185 one-way
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">1. N4 Gateway</span>
+                <span class="toll-cost">~R50</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">2. Machado</span>
+                <span class="toll-cost">~R65</span>
+            </div>
+            <div class="toll-plaza">
+                <span class="toll-name">3. Komatipoort</span>
+                <span class="toll-cost">~R55</span>
+            </div>
+
+            <h3>🍽️ Featured Restaurants & Takeaways</h3>
+            <div class="place-card">
+                <div class="place-name">KZN: The Oyster Box, Moyo, Butcher Boys, Nando's, Bunny Chow spots</div>
+            </div>
+            <div class="place-card">
+                <div class="place-name">Gauteng: Marble Restaurant, The Black Door, Steers, Fishaways</div>
+            </div>
+
+            <h3>⛽ Fuel Stations with Amenities</h3>
+            <p>Shell Ultra City, Engen, Caltex, Sasol — 24hr locations with restrooms, ATMs & convenience stores listed for both provinces.</p>
+
+            <p style="margin-top:12px; font-size:13px; color:#718096;">💡 Works offline — save to phone home screen. Always verify tariffs with SANRAL before travel.</p>
+            <button class="back-btn" onclick="hideSection('travel')">← Back to All Products</button>
+        </div>
+
+        <!-- ⚠️ DISCLAIMER -->
+        <div class="disclaimer">
+            ⚠️ All information is for general guidance only — verify critical details (tax deadlines, toll tariffs, lottery rules) with official sources before making decisions.<br>
+            Not affiliated with SARS, National Lottery, SANRAL, or any listed business.
+        </div>
+    </div>
+</div>
+
+<script>
+// 🔑 ONE PASSWORD FOR EVERYTHING
+const MASTER_PASSWORD = "SAhub2026";
+
+function checkPassword() {
+    const input = document.getElementById("password-input").value;
+    if (input === MASTER_PASSWORD) {
+        document.getElementById("password-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+    } else {
+        document.getElementById("wrong-pass").style.display = "block";
+    }
+}
+
+function showSection(id) {
+    document.querySelectorAll('.content-area').forEach(e => e.classList.remove('show'));
+    document.getElementById(id).classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideSection(id) {
+    document.getElementById(id).classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 🎱 LOTTO NUMBER GENERATORS
+function generateLotto() {
+    let numbers = [];
+    while (numbers.length < 6) {
+        let num = Math.floor(Math.random() * 52) + 1;
+        if (!numbers.includes(num)) numbers.push(num);
+    }
+    numbers.sort((a,b) => a-b);
+    document.getElementById("lotto-numbers").innerText = numbers.join("  •  ");
+}
+
+function generatePowerball() {
+    let numbers = [];
+    while (numbers.length < 5) {
+        let num = Math.floor(Math.random() * 50) + 1;
+        if (!numbers.includes(num)) numbers.push(num);
+    }
+    numbers.sort((a,b) => a-b);
+    let powerball = Math.floor(Math.random() * 20) + 1;
+    document.getElementById("powerball-numbers").innerText = numbers.join("  •  ") + "    ⚫ Powerball: " + powerball;
+}
+</script>
+
+</body>
+</html>
